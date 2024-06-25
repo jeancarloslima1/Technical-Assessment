@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechAssess.ScrapingService.Attributes;
 using TechAssess.ScrapingService.Enums;
 using TechAssess.WebScrapingService.Services;
 
@@ -18,10 +19,18 @@ namespace TechAssess.WebScrapingService.Controllers
 
 
         [HttpGet]
+        [Validation]
         public IActionResult GetScrapingResults([FromQuery] string supplierName, [FromQuery] List<Source> sources)
         {
-            var results = _scrapingService.Scrap(supplierName, sources);
-            return Ok(results);
+            try
+            {
+                var results = _scrapingService.Scrap(supplierName, sources);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

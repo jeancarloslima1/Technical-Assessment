@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechAssess.ScrapingService", "TechAssess.WebScrapingService\TechAssess.ScrapingService.csproj", "{5333BBA7-3BB6-48BE-8FA3-15E69E4BD3A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechAssess.SupplierService", "TechAssess.SupplierService\TechAssess.SupplierService.csproj", "{A80EA8B7-C072-4285-9B8C-56F5F5194D78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5333BBA7-3BB6-48BE-8FA3-15E69E4BD3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5333BBA7-3BB6-48BE-8FA3-15E69E4BD3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5333BBA7-3BB6-48BE-8FA3-15E69E4BD3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80EA8B7-C072-4285-9B8C-56F5F5194D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80EA8B7-C072-4285-9B8C-56F5F5194D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80EA8B7-C072-4285-9B8C-56F5F5194D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80EA8B7-C072-4285-9B8C-56F5F5194D78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
