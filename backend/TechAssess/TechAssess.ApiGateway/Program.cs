@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +34,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 builder.Services.AddOcelot().AddCacheManager(x => { x.WithDictionaryHandle(); });
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<IList<string>>();
+builder.Services.AddCors(options => options.AddPolicy(
+    name: "NgOrigins",
+    policy =>
+    {
+        policy.WithOrigins(allowedOrigins.ToArray())
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    }
+));
+
 var app = builder.Build();
+
+app.UseCors("NgOrigins");
 
 if (app.Environment.IsDevelopment())
 {
