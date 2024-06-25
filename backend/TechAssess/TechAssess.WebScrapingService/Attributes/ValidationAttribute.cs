@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
-using TechAssess.ScrapingService.Enums;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TechAssess.ScrapingService.Attributes
 {
@@ -15,7 +12,7 @@ namespace TechAssess.ScrapingService.Attributes
             {
                 var supplierName = (string)context.ActionArguments["supplierName"]!;
 
-                if(Regex.IsMatch(supplierName, @"^[a-zA-Z0-9\s&\-_\.!,]+$"))
+                if (Regex.IsMatch(supplierName, @"^[a-zA-Z0-9\s&\-_\.!,]+$"))
                 {
                     return;
                 }
@@ -23,7 +20,7 @@ namespace TechAssess.ScrapingService.Attributes
 
             context.Result = new BadRequestObjectResult(new
             {
-                ErrorMessage= "Only alphanumeric characters are allowed for supplierName"
+                ErrorMessage = "Only alphanumeric characters are allowed for supplierName"
             });
         }
     }

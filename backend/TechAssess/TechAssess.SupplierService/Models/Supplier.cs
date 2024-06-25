@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace TechAssess.SupplierService.Models
@@ -9,9 +9,9 @@ namespace TechAssess.SupplierService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
+
         [RegularExpression(@"^[a-zA-Z0-9\s&\-_\.!,]+$", ErrorMessage = "Only alphanumeric characters are allowed for LegalName.")]
-        public string LegalName { get; set; }  = string.Empty;
+        public string LegalName { get; set; } = string.Empty;
 
         [RegularExpression(@"^[a-zA-Z0-9\s&\-_\.!,]+$", ErrorMessage = "Only alphanumeric characters are allowed for TradeName.")]
         public string TradeName { get; set; } = string.Empty;
@@ -37,8 +37,8 @@ namespace TechAssess.SupplierService.Models
         public Country? Country { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal AnnualRevenueUSD { get; set; }  
+        public decimal AnnualRevenueUSD { get; set; }
 
-        public DateTime LastEdited { get; set; }  
+        public DateTime LastEdited { get; set; }
     }
 }

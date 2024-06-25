@@ -19,63 +19,62 @@ namespace TechAssess.ScrapingService.Scrapers
             options.AddArguments("disable-dev-shm-usage");
             options.AddArguments("disable-infobars");
             options.AddArguments("start-maximized");
-            using var driver = new ChromeDriver(options);
-            driver.Navigate().GoToUrl("https://sanctionssearch.ofac.treas.gov/");
-
-            //Wait for page to load
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+            using (var driver = new ChromeDriver(options))
             {
-                PollingInterval = TimeSpan.FromMilliseconds(200)
-            };
-            var nameTextBox = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("ctl00_MainContent_txtLastName")));
+                driver.Navigate().GoToUrl("https://sanctionssearch.ofac.treas.gov/");
 
-            //Search supplier
-            nameTextBox.SendKeys(supplierName);
-            driver.FindElement(By.Id("ctl00_MainContent_btnSearch")).Click();
-            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-
-            //Extract data from table
-            try
-            {
-                var table = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("gvSearchResults")));
-                var rows = table.FindElements(By.TagName("tr"));
-                var tableData = new List<ScrapeData>();
-
-                for (int i = 0; i < rows.Count; i++)
+                //Wait for page to load
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                 {
-                    var cells = rows[i].FindElements(By.TagName("td"));
+                    PollingInterval = TimeSpan.FromMilliseconds(200)
+                };
+                var nameTextBox = wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("ctl00_MainContent_txtLastName")));
 
-                    var tableRow = new OFACData
-                    {
-                        Name = cells[0].FindElement(By.TagName("a")).Text,
-                        Address = cells[1].Text,
-                        Type = cells[2].Text,
-                        Programs = cells[3].Text,
-                        List = cells[4].Text,
-                        Score = cells[5].Text,
-                    };
+                //Search supplier
+                nameTextBox.SendKeys(supplierName);
+                driver.FindElement(By.Id("ctl00_MainContent_btnSearch")).Click();
+                wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
-                    tableData.Add(tableRow);
-                }
-                return tableData;
-            }
-            catch (WebDriverTimeoutException)
-            {
-
+                //Extract data from table
                 try
                 {
-                    var noResultsParagraph = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content p.lead")));
+                    var table = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("gvSearchResults")));
+                    var rows = table.FindElements(By.TagName("tr"));
+                    var tableData = new List<ScrapeData>();
+
+                    for (int i = 0; i < rows.Count; i++)
+                    {
+                        var cells = rows[i].FindElements(By.TagName("td"));
+
+                        var tableRow = new OFACData
+                        {
+                            Name = cells[0].FindElement(By.TagName("a")).Text,
+                            Address = cells[1].Text,
+                            Type = cells[2].Text,
+                            Programs = cells[3].Text,
+                            List = cells[4].Text,
+                            Score = cells[5].Text,
+                        };
+
+                        tableData.Add(tableRow);
+                    }
+                    return tableData;
                 }
                 catch (WebDriverTimeoutException)
                 {
-                    throw new Exception("Page didn't load");
+
+                    try
+                    {
+                        var noResultsParagraph = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content p.lead")));
+                    }
+                    catch (WebDriverTimeoutException)
+                    {
+                        throw new Exception("Page didn't load");
+                    }
                 }
             }
 
-
             return new List<ScrapeData>();
-
-
         }
     }
 }

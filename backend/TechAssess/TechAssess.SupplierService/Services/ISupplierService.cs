@@ -1,5 +1,4 @@
-﻿using TechAssess.SupplierService.Dto;
-using TechAssess.SupplierService.Models;
+﻿using TechAssess.SupplierService.Models;
 using TechAssess.SupplierService.Util;
 
 namespace TechAssess.SupplierService.Services

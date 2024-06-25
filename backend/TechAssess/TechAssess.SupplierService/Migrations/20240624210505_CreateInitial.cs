@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -84,7 +83,7 @@ namespace TechAssess.SupplierService.Migrations
                 }
             );
 
-            
+
             migrationBuilder.InsertData(
             table: "Suppliers",
             columns: new[]

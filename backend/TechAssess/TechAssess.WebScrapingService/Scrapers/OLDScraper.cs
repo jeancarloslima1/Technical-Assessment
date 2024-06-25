@@ -19,60 +19,61 @@ namespace TechAssess.ScrapingService.Scrapers
             options.AddArguments("disable-dev-shm-usage");
             options.AddArguments("disable-infobars");
             options.AddArguments("start-maximized");
-            using var driver = new ChromeDriver(options);
-
-            driver.Navigate().GoToUrl("https://offshoreleaks.icij.org/");
-
-            //Wait and accept TOS
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+            using (var driver = new ChromeDriver(options))
             {
-                PollingInterval = TimeSpan.FromMilliseconds(100)
-            };
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("accept"))).Click();
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@type='submit' and contains(text(), 'Submit')]"))).Click();
 
-            //Search supplier
-            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("q"))).SendKeys(supplierName);
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@type='submit' and contains(text(), 'Search')]"))).Click();
+                driver.Navigate().GoToUrl("https://offshoreleaks.icij.org/");
 
-            //Extract data from table
-            wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-            try
-            {
-                var table = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content table.search__results__table")));
-                var rows = table.FindElements(By.TagName("tr"));
-                var tableData = new List<ScrapeData>();
-
-                for (int i = 1; i < rows.Count; i++)
+                //Wait and accept TOS
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                 {
-                    var cells = rows[i].FindElements(By.TagName("td"));
-                    var tableRow = new OLDData
-                    {
-                        Entity = cells[0].FindElement(By.TagName("a")).Text,
-                        Jurisdiction = cells[1].Text,
-                        LinkedTo = cells[2].Text,
-                        DataFrom = cells[3].FindElement(By.TagName("a")).Text
-                    };
-                    tableData.Add(tableRow);
-                }
-                return tableData;
-            }
-            catch (WebDriverTimeoutException)
-            {
+                    PollingInterval = TimeSpan.FromMilliseconds(100)
+                };
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("accept"))).Click();
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@type='submit' and contains(text(), 'Submit')]"))).Click();
 
+                //Search supplier
+                wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("q"))).SendKeys(supplierName);
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@type='submit' and contains(text(), 'Search')]"))).Click();
+
+                //Extract data from table
+                wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
                 try
                 {
-                    var noResultsParagraph = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content p.lead")));
+                    var table = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content table.search__results__table")));
+                    var rows = table.FindElements(By.TagName("tr"));
+                    var tableData = new List<ScrapeData>();
+
+                    for (int i = 1; i < rows.Count; i++)
+                    {
+                        var cells = rows[i].FindElements(By.TagName("td"));
+                        var tableRow = new OLDData
+                        {
+                            Entity = cells[0].FindElement(By.TagName("a")).Text,
+                            Jurisdiction = cells[1].Text,
+                            LinkedTo = cells[2].Text,
+                            DataFrom = cells[3].FindElement(By.TagName("a")).Text
+                        };
+                        tableData.Add(tableRow);
+                    }
+                    return tableData;
                 }
                 catch (WebDriverTimeoutException)
                 {
-                    //Bot detected
-                    throw new Exception("Cloudfront 403: request could not be satisfied");
+
+                    try
+                    {
+                        var noResultsParagraph = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content p.lead")));
+                    }
+                    catch (WebDriverTimeoutException)
+                    {
+                        //Bot detected
+                        throw new Exception("Cloudfront 403: request could not be satisfied");
+                    }
                 }
+
             }
-
-
             return new List<ScrapeData>();
         }
     }

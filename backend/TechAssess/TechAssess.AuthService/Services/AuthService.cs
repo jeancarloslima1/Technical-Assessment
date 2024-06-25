@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using TechAssess.AuthService.Data;
 using TechAssess.AuthService.Dto;
 
@@ -40,7 +39,7 @@ namespace TechAssess.AuthService.Services
         public async Task<AuthResponse> RefreshToken(RefreshTokenRequest request)
         {
             var principal = _jwtService.GetPrincipalFromExpiredToken(request.AccessToken);
-            if(principal.Identity == null) throw new Exception("Invalid access token");
+            if (principal.Identity == null) throw new Exception("Invalid access token");
             var username = principal.Identity.Name;
 
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);

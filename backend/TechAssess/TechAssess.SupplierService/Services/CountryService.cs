@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using System;
 using TechAssess.SupplierService.Data;
 using TechAssess.SupplierService.Models;
 

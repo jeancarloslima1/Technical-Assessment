@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TechAssess.SupplierService.Dto;
 using TechAssess.SupplierService.Enums;
@@ -20,30 +17,37 @@ namespace TechAssess.SupplierService.Exceptions
         public async Task InvokeAsync(HttpContext context)
         {
             var originalBodyStream = context.Response.Body;
-            using var responseBody = new MemoryStream();
-            context.Response.Body = responseBody;
-            try
+            using (var responseBody = new MemoryStream())
             {
-                await _next(context);
-                if (context.Response.StatusCode == StatusCodes.Status400BadRequest )
+                context.Response.Body = responseBody;
+                try
                 {
-                    responseBody.Seek(0, SeekOrigin.Begin);
-                    var responseContent = await new StreamReader(responseBody).ReadToEndAsync();
-                    var validationProblemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                    if (validationProblemDetails != null && validationProblemDetails.Status != null)
+                    await _next(context);
+                    if (context.Response.StatusCode == StatusCodes.Status400BadRequest)
                     {
-                        var errorMessage = ConcatenateErrors(validationProblemDetails);
-                        var customResponse = new ApiResponse<object>
-                        {
-                            Data = null,
-                            ErrorCode = ErrorCode.ValidationError.ToString(),
-                            ErrorMessage = errorMessage
-                        };
+                        responseBody.Seek(0, SeekOrigin.Begin);
+                        var responseContent = await new StreamReader(responseBody).ReadToEndAsync();
+                        var validationProblemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                        var customResponseJson = JsonSerializer.Serialize(customResponse);
-                        context.Response.Body = originalBodyStream;
-                        await context.Response.WriteAsync(customResponseJson);
+                        if (validationProblemDetails != null && validationProblemDetails.Status != null)
+                        {
+                            var errorMessage = ConcatenateErrors(validationProblemDetails);
+                            var customResponse = new ApiResponse<object>
+                            {
+                                Data = null,
+                                ErrorCode = ErrorCode.ValidationError.ToString(),
+                                ErrorMessage = errorMessage
+                            };
+
+                            var customResponseJson = JsonSerializer.Serialize(customResponse);
+                            context.Response.Body = originalBodyStream;
+                            await context.Response.WriteAsync(customResponseJson);
+                        }
+                        else
+                        {
+                            responseBody.Seek(0, SeekOrigin.Begin);
+                            await responseBody.CopyToAsync(originalBodyStream);
+                        }
                     }
                     else
                     {
@@ -51,29 +55,25 @@ namespace TechAssess.SupplierService.Exceptions
                         await responseBody.CopyToAsync(originalBodyStream);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseBody.Seek(0, SeekOrigin.Begin);
-                    await responseBody.CopyToAsync(originalBodyStream);
+                    context.Response.Body = originalBodyStream;
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    var customErrorResponse = new ApiResponse<object>
+                    {
+                        Data = null,
+                        ErrorCode = ErrorCode.InternalServerError.ToString(),
+                        ErrorMessage = ex.Message
+                    };
+                    var customErrorResponseJson = JsonSerializer.Serialize(customErrorResponse);
+                    await context.Response.WriteAsync(customErrorResponseJson);
+                }
+                finally
+                {
+                    context.Response.Body = originalBodyStream;
                 }
             }
-            catch (Exception ex)
-            {
-                context.Response.Body = originalBodyStream;
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                var customErrorResponse = new ApiResponse<object>
-                {
-                    Data = null,
-                    ErrorCode = ErrorCode.InternalServerError.ToString(),
-                    ErrorMessage = ex.Message
-                };
-                var customErrorResponseJson = JsonSerializer.Serialize(customErrorResponse);
-                await context.Response.WriteAsync(customErrorResponseJson);
-            }
-            finally
-            {
-                context.Response.Body = originalBodyStream;
-            }
+
         }
 
 

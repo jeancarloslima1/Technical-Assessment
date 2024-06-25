@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using TechAssess.ScrapingService.Enums;
+﻿using TechAssess.ScrapingService.Enums;
 using TechAssess.ScrapingService.Factories;
 using TechAssess.ScrapingService.Models;
-using TechAssess.ScrapingService.Scrapers;
 using TechAssess.WebScrapingService.Services;
 
 namespace TechAssess.ScrapingService.Services

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace TechAssess.SupplierService.Util
 {
-    public class PaginatedList<T> 
+    public class PaginatedList<T>
     {
         public List<T> Items { get; set; } = new List<T>();
         public int PageIndex { get; private set; }

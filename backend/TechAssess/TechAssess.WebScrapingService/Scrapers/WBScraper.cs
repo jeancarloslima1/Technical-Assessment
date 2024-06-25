@@ -19,40 +19,42 @@ namespace TechAssess.ScrapingService.Scrapers
             options.AddArguments("disable-dev-shm-usage");
             options.AddArguments("disable-infobars");
             options.AddArguments("start-maximized");
-            using var driver = new ChromeDriver(options);
-            driver.Navigate().GoToUrl("https://projects.worldbank.org/en/projects-operations/procurement/debarred-firms");
-
-            //Wait for initial table to load
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+            using (var driver = new ChromeDriver(options))
             {
-                PollingInterval = TimeSpan.FromMilliseconds(200)
-            };
-            var table = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.k-grid-content.k-auto-scrollable > table[role='grid']")));
+                driver.Navigate().GoToUrl("https://projects.worldbank.org/en/projects-operations/procurement/debarred-firms");
 
-            //Search supplier
-            driver.FindElement(By.Id("category")).SendKeys(supplierName);
-
-            //Extract data from table
-            var rows = table.FindElements(By.TagName("tr"));
-            var tableData = new List<ScrapeData>();
-
-            for (int i = 0; i < rows.Count; i++)
-            {
-                var cells = rows[i].FindElements(By.TagName("td"));
-
-                var tableRow = new WBData
+                //Wait for initial table to load
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                 {
-                    FirmName = cells[0].Text,
-                    Address = cells[2].Text,
-                    Country = cells[3].Text,
-                    FromDate = cells[4].Text,
-                    ToDate = cells[5].Text,
-                    Grounds = cells[6].Text
+                    PollingInterval = TimeSpan.FromMilliseconds(200)
                 };
+                var table = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div.k-grid-content.k-auto-scrollable > table[role='grid']")));
 
-                tableData.Add(tableRow);
+                //Search supplier
+                driver.FindElement(By.Id("category")).SendKeys(supplierName);
+
+                //Extract data from table
+                var rows = table.FindElements(By.TagName("tr"));
+                var tableData = new List<ScrapeData>();
+
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var cells = rows[i].FindElements(By.TagName("td"));
+
+                    var tableRow = new WBData
+                    {
+                        FirmName = cells[0].Text,
+                        Address = cells[2].Text,
+                        Country = cells[3].Text,
+                        FromDate = cells[4].Text,
+                        ToDate = cells[5].Text,
+                        Grounds = cells[6].Text
+                    };
+
+                    tableData.Add(tableRow);
+                }
+                return tableData;
             }
-            return tableData;
         }
     }
 }
