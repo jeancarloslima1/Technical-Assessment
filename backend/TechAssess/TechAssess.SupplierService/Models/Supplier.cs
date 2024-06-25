@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TechAssess.SupplierService.Models
 {
@@ -32,6 +33,7 @@ namespace TechAssess.SupplierService.Models
         public string PhysicalAddress { get; set; } = string.Empty;
 
         public int CountryId { get; set; }
+        [JsonIgnore]
         public Country? Country { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
