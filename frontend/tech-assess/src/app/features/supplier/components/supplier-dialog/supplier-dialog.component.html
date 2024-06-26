@@ -1,0 +1,109 @@
+<h1 mat-dialog-title>Screening for {{ supplierName }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" class="form-group">
+    <div class="checkbox-row">
+      <mat-checkbox formControlName="oldCheckbox" (change)="onCheckboxChange()">Offshore Leaks Database</mat-checkbox>
+      <mat-checkbox formControlName="wbCheckbox" (change)="onCheckboxChange()">The World Bank</mat-checkbox>
+      <mat-checkbox formControlName="ofacCheckbox" (change)="onCheckboxChange()">Office of Foreign Assets Control</mat-checkbox>
+    </div>
+    <div class="button-row">
+      <button mat-button [disabled]="!buttonEnabled" (click)="onSubmit()" class="search-button"><mat-icon>find_in_page</mat-icon> Search</button>
+    </div>
+  </form>
+
+  <div class="table-container">
+    <div class="mat-elevation-z8">
+      <h2>Offshore Leaks Database</h2>
+      <table mat-table [dataSource]="oldDataSource" matSort #oldDataSort="matSort">
+        <ng-container matColumnDef="entity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Entity </th>
+          <td mat-cell *matCellDef="let element"> {{element.entity}} </td>
+        </ng-container>
+        <ng-container matColumnDef="jurisdiction">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Jurisdiction </th>
+          <td mat-cell *matCellDef="let element"> {{element.jurisdiction}} </td>
+        </ng-container>
+        <ng-container matColumnDef="linkedTo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Linked To </th>
+          <td mat-cell *matCellDef="let element"> {{element.linkedTo}} </td>
+        </ng-container>
+        <ng-container matColumnDef="dataFrom">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data From </th>
+          <td mat-cell *matCellDef="let element"> {{element.dataFrom}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="oldDataColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: oldDataColumns;"></tr>
+      </table>
+      <mat-paginator #oldDataPaginator [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <div class="mat-elevation-z8">
+      <h2>The World Bank</h2>
+      <table mat-table [dataSource]="wbDataSource" matSort #wbDataSort="matSort">
+        <ng-container matColumnDef="firmName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Firm Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.firmName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+        </ng-container>
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+          <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fromDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> From Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.fromDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="toDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> To Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.toDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="grounds">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Grounds </th>
+          <td mat-cell *matCellDef="let element"> {{element.grounds}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="wbDataColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: wbDataColumns;"></tr>
+      </table>
+      <mat-paginator #wbDataPaginator [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <div class="mat-elevation-z8">
+      <h2>Office of Foreign Assets Control</h2>
+      <table mat-table [dataSource]="ofacDataSource" matSort #ofacDataSort="matSort">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+        </ng-container>
+        <ng-container matColumnDef="programs">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Programs </th>
+          <td mat-cell *matCellDef="let element"> {{element.programs}} </td>
+        </ng-container>
+        <ng-container matColumnDef="list">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> List </th>
+          <td mat-cell *matCellDef="let element"> {{element.list}} </td>
+        </ng-container>
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Score </th>
+          <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="ofacDataColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: ofacDataColumns;"></tr>
+      </table>
+      <mat-paginator #ofacDataPaginator [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Close</button>
+</div>

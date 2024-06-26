@@ -1,0 +1,95 @@
+<app-toolbar></app-toolbar>
+<form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" class="supplier-form">
+  <div class="form-row back-button-row">
+    <button mat-button color="primary" (click)="goBack()" class="back-button" type="button">
+      <mat-icon>arrow_back</mat-icon> Back
+    </button>
+  </div>
+  
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <mat-label>Legal Name</mat-label>
+      <input matInput formControlName="legalName">
+      <mat-error *ngIf="supplierForm.controls['legalName'].hasError('pattern')">
+        Only alphanumeric characters are allowed.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="form-field">
+      <mat-label>Trade Name</mat-label>
+      <input matInput formControlName="tradeName">
+      <mat-error *ngIf="supplierForm.controls['tradeName'].hasError('pattern')">
+        Only alphanumeric characters are allowed.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <mat-label>Tax Identification Number</mat-label>
+      <input matInput formControlName="taxIdentificationNumber" maxlength="11">
+      <mat-error *ngIf="supplierForm.controls['taxIdentificationNumber'].hasError('pattern')">
+        Invalid Tax Identification Number.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="form-field">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" maxlength="15">
+      <mat-error *ngIf="supplierForm.controls['phoneNumber'].hasError('min')">
+        Invalid Phone Number.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="supplierForm.controls['email'].hasError('email')">
+        Invalid email format.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="form-field">
+      <mat-label>Website</mat-label>
+      <input matInput formControlName="website">
+      <mat-error *ngIf="supplierForm.controls['website'].hasError('pattern')">
+        Invalid website format.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <mat-label>Annual Revenue (USD)</mat-label>
+      <input matInput formControlName="annualRevenueUSD" currencyMask>
+      <mat-error *ngIf="supplierForm.controls['annualRevenueUSD'].hasError('min')">
+        Invalid revenue amount.
+      </mat-error>
+    </mat-form-field>    
+    <mat-form-field class="form-field">
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="countryId">
+        <mat-option *ngFor="let country of countries" [value]="country.id">
+          {{ country.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="supplierForm.controls['countryId'].hasError('required')">
+        Please choose a country.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <mat-label>Physical Address</mat-label>
+      <input matInput formControlName="physicalAddress">
+      <mat-error *ngIf="supplierForm.controls['physicalAddress'].hasError('pattern')">
+        Only alphanumeric characters are allowed.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row button-row">
+    <button *ngIf="!isReadOnly" mat-raised-button color="primary" type="submit"
+      [disabled]="supplierForm.invalid">Submit</button>
+  </div>
+</form>
