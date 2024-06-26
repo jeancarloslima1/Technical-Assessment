@@ -48,15 +48,11 @@ namespace TechAssess.AuthService.Services
                 throw new Exception("Invalid refresh token");
 
             var newAccessToken = _jwtService.GenerateAccessToken(user);
-            var newRefreshToken = _jwtService.GenerateRefreshToken();
-
-            user.RefreshToken = newRefreshToken;
-            await _context.SaveChangesAsync();
 
             return new()
             {
                 AccessToken = newAccessToken,
-                RefreshToken = newRefreshToken
+                RefreshToken = user.RefreshToken
             };
         }
     }
