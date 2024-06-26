@@ -5,6 +5,6 @@ namespace TechAssess.ScrapingService.Factories
 {
     public interface IScraperFactory
     {
-        IScraper GetScraper(Source source);
+        AbstractScraper GetScraper(Source source);
     }
 }

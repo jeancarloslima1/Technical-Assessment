@@ -2,13 +2,14 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Diagnostics;
 using TechAssess.ScrapingService.Models;
 
 namespace TechAssess.ScrapingService.Scrapers
 {
-    public class OLDScraper : IScraper
+    public class OLDScraper : AbstractScraper
     {
-        public List<ScrapeData> Scrap(string supplierName)
+        public override List<ScrapeData> Scrap(string supplierName)
         {
             var options = new ChromeOptions();
             options.AddArgument("--headless");
@@ -19,9 +20,17 @@ namespace TechAssess.ScrapingService.Scrapers
             options.AddArguments("disable-dev-shm-usage");
             options.AddArguments("disable-infobars");
             options.AddArguments("start-maximized");
-            using (var driver = new ChromeDriver(options))
-            {
+            options.AddArgument("--disable-extensions");
+            options.AddArgument("--disable-popup-blocking");
+            options.AddArgument("--disable-dev-shm-usage");
+            options.AddArgument("--disable-software-rasterizer");
+            options.AddArgument("--disable-notifications");
 
+            ChromeDriver? driver = null;
+            var scrapeResponse = new List<ScrapeData>();
+            try
+            {
+                driver = new ChromeDriver(options);
                 driver.Navigate().GoToUrl("https://offshoreleaks.icij.org/");
 
                 //Wait and accept TOS
@@ -57,11 +66,10 @@ namespace TechAssess.ScrapingService.Scrapers
                         };
                         tableData.Add(tableRow);
                     }
-                    return tableData;
+                    scrapeResponse = tableData;
                 }
                 catch (WebDriverTimeoutException)
                 {
-
                     try
                     {
                         var noResultsParagraph = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".search__results__content p.lead")));
@@ -74,7 +82,17 @@ namespace TechAssess.ScrapingService.Scrapers
                 }
 
             }
-            return new List<ScrapeData>();
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                driver?.Quit();
+                driver?.Dispose();
+                KillChromeDriverProcesses();
+            }
+            return scrapeResponse;
         }
     }
 }
