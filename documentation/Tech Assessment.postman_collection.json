@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "ec7845b2-e0b6-4712-b641-8b9ee07fbeef",
+		"name": "Tech Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24902987"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"supermegasecret\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTU0NywiZXhwIjoxNzE5NDA3MzQ3LCJpYXQiOjE3MTk0MDU1NDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.pitX4AiVN3OL9OTLHCVdxtRD2idc3JUb8DRrBBy3fwE\",\r\n    \"refreshToken\": \"nV6cJGJze1XPVbOAlVl9+BohTJFBidkHURxLmp6ckgc=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/refresh-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scraping Service",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwMDMxMSwiZXhwIjoxNzE5NDAyMTExLCJpYXQiOjE3MTk0MDAzMTEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.8YrNYqs_pcvbfoQltC517qSlb3c2dvM6nbDLvu61uus",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/scraping?supplierName=Odebrecht&sources=1&sources=2&sources=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"scraping"
+					],
+					"query": [
+						{
+							"key": "supplierName",
+							"value": "Odebrecht"
+						},
+						{
+							"key": "sources",
+							"value": "1"
+						},
+						{
+							"key": "sources",
+							"value": "2"
+						},
+						{
+							"key": "sources",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Countries",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTM0ODkwNSwiZXhwIjoxNzE5MzUwNzA1LCJpYXQiOjE3MTkzNDg5MDUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.VLLA_L36fxhEgxwABsrfsJAnoC2HddOTgKI-lBXOzAE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/country",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"country"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Suppliers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTA2MSwiZXhwIjoxNzE5NDA2ODYxLCJpYXQiOjE3MTk0MDUwNjEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.Qt5Oy-ueQ_RhoStpgicdzdy3atU-bo-udfCYHoySb7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/supplier?pageIndex=1&pageSize=10&legalName=Interbank&tradeName=Interbank&taxIdentificationNumber=23456789012&countryId=136",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"supplier"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "legalName",
+							"value": "Interbank"
+						},
+						{
+							"key": "tradeName",
+							"value": "Interbank"
+						},
+						{
+							"key": "taxIdentificationNumber",
+							"value": "23456789012"
+						},
+						{
+							"key": "countryId",
+							"value": "136"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Supplier By ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTA2MSwiZXhwIjoxNzE5NDA2ODYxLCJpYXQiOjE3MTk0MDUwNjEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.Qt5Oy-ueQ_RhoStpgicdzdy3atU-bo-udfCYHoySb7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/supplier/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"supplier",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Supplier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTA2MSwiZXhwIjoxNzE5NDA2ODYxLCJpYXQiOjE3MTk0MDUwNjEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.Qt5Oy-ueQ_RhoStpgicdzdy3atU-bo-udfCYHoySb7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"legalName\": \"Apple Inc.\",\r\n    \"tradeName\": \"Apple\",\r\n    \"taxIdentificationNumber\": \"32165498701\",\r\n    \"phoneNumber\": \"+5555551234\",\r\n    \"email\": \"info@acme.com\",\r\n    \"website\": \"http://www.acme.com\",\r\n    \"physicalAddress\": \"123 Elm Street, Springfield, USA\",\r\n    \"countryId\": 186,\r\n    \"annualRevenueUSD\": 100000000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/supplier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"supplier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Supplier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTA2MSwiZXhwIjoxNzE5NDA2ODYxLCJpYXQiOjE3MTk0MDUwNjEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.Qt5Oy-ueQ_RhoStpgicdzdy3atU-bo-udfCYHoySb7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 19,\r\n    \"legalName\": \"Apple Inc.\",\r\n    \"tradeName\": \"Apple\",\r\n    \"taxIdentificationNumber\": \"32165498701\",\r\n    \"phoneNumber\": \"+5555551234\",\r\n    \"email\": \"info@apple.com\",\r\n    \"website\": \"http://www.apple.com\",\r\n    \"physicalAddress\": \"123 Elm Street, Springfield, USA\",\r\n    \"countryId\": 186,\r\n    \"annualRevenueUSD\": 200000000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/supplier/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"supplier",
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Supplier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTcxOTQwNTA2MSwiZXhwIjoxNzE5NDA2ODYxLCJpYXQiOjE3MTk0MDUwNjEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCJ9.Qt5Oy-ueQ_RhoStpgicdzdy3atU-bo-udfCYHoySb7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/supplier/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"supplier",
+						"19"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
